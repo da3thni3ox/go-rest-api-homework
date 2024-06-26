@@ -61,13 +61,12 @@ func getTasks(w http.ResponseWriter, r *http.Request) {
 
 // GET Получение задачи по ID
 func getTaskById(w http.ResponseWriter, r *http.Request) {
-	var err error
 	id := chi.URLParam(r, "id")
 
 	task, ok := tasks[id]
 
 	if !ok {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, "Такого id нет", http.StatusBadRequest)
 		return
 	}
 
@@ -83,7 +82,6 @@ func getTaskById(w http.ResponseWriter, r *http.Request) {
 	_, err = w.Write(resp)
 
 	if err != nil {
-		fmt.Println("Error")
 		fmt.Errorf("%s", err)
 	}
 }
@@ -119,11 +117,11 @@ func createTask(w http.ResponseWriter, r *http.Request) {
 // DELETE удаление задачи
 func deleteTask(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
-	var err error
+
 	_, ok := tasks[id]
 
 	if !ok {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, "Ошибка выполнения удаления", http.StatusInternalServerError)
 		return
 	}
 
